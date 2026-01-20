@@ -10,7 +10,6 @@
   <router-outlet></router-outlet>
 </main>
 
-<!-- ה-Snackbar המעודכן -->
 @if (notif.message$ | async; as msg) {
   <div class="snackbar">
     {{ msg }}

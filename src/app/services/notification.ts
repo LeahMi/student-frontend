@@ -8,6 +8,6 @@ export class NotificationService {
 
   show(message: string) {
     this.messageSource.next(message);
-    setTimeout(() => this.messageSource.next(null), 3000); // ההודעה תיעלם אחרי 3 שניות
+    setTimeout(() => this.messageSource.next(null), 3000);
   }
 }

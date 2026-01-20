@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Api } from '../../services/api';
 import { NotificationService } from '../../services/notification';
+import { Course, Student, RegistrationRequest } from '../../models/types.model';
 
 @Component({
   selector: 'app-courses',
@@ -12,41 +13,40 @@ import { NotificationService } from '../../services/notification';
   styleUrl: './courses.css',
 })
 export class Courses implements OnInit {
-  // שדות חיפוש
   searchName: string = '';
   searchId: string = '';
   searchDate: string = '';
 
-  allCourses: any[] = [];
-  filteredCourses: any[] = [];
-  student: any;
+  allCourses: Course[] = [];
+  filteredCourses: Course[] = [];
+  student: Student | null = null;
   currentSortColumn: string = '';
   isAscending: boolean = true;
 
   constructor(
     private api: Api,
     private cdr: ChangeDetectorRef,
-    private notif: NotificationService
+    private notif: NotificationService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.student = this.api.getLoggedInStudent();
-    this.loadAllCourses(); // יקרא מיד בטעינה
+    this.loadAllCourses();
   }
 
-  loadAllCourses() {
+  loadAllCourses(): void {
     this.api.getAllCourses().subscribe({
-      next: (data) => {
+      next: (data: Course[]) => {
         this.allCourses = data;
         this.filteredCourses = [...data];
-        this.cdr.detectChanges(); // <--- פקודת קסם: מכריחה את אנגולר לרענן את המסך עכשיו!
+        this.cdr.detectChanges();
       },
       error: (err) => console.error(err),
     });
   }
 
-  onSearch() {
-    this.filteredCourses = this.allCourses.filter((c) => {
+  onSearch(): void {
+    this.filteredCourses = this.allCourses.filter((c: Course) => {
       const matchName = c.courseName.toLowerCase().includes(this.searchName.toLowerCase());
       const matchId = this.searchId ? c.courseId.toString().includes(this.searchId) : true;
       const matchDate = this.searchDate ? new Date(c.startDate) >= new Date(this.searchDate) : true;
@@ -54,34 +54,30 @@ export class Courses implements OnInit {
     });
   }
 
-  register(courseId: number) {
-    const registration = {
+  register(courseId: number): void {
+    if (!this.student) return;
+
+    const registration: RegistrationRequest = {
       studentId: this.student.id,
       courseId: courseId,
       grade: null,
-      registrationDate: new Date().toISOString().split('T')[0] 
+      registrationDate: new Date().toISOString().split('T')[0],
     };
 
     this.api.registerToCourse(registration).subscribe({
-      next: (res) => {
+      next: () => {
         this.notif.show('נרשמת לקורס בהצלחה!');
         this.onSearch();
       },
       error: (err) => {
-        // רק כאן מציגים הודעת שגיאה
-        if (err.status === 400) {
-          this.notif.show('שגיאה: את/ה כבר רשום/ה לקורס זה.');
-        } else {
-          this.notif.show('שגיאה בתקשורת עם השרת.');
-        }
-        console.error(err);
+        const msg =
+          err.status === 400 ? 'שגיאה: את/ה כבר רשום/ה לקורס זה.' : 'שגיאה בתקשורת עם השרת.';
+        this.notif.show(msg);
       },
     });
   }
 
-  // פונקציית מיון פשוטה לפי עמודה
-  sort(column: string) {
-    // אם לוחצים על אותה עמודה - הופכים את הכיוון. אם עמודה חדשה - מתחילים בעולה.
+  sort(column: string): void {
     if (this.currentSortColumn === column) {
       this.isAscending = !this.isAscending;
     } else {
@@ -89,40 +85,29 @@ export class Courses implements OnInit {
       this.isAscending = true;
     }
 
-    this.filteredCourses.sort((a, b) => {
+    this.filteredCourses.sort((a: Course, b: Course) => {
       let valueA = a[column];
       let valueB = b[column];
 
-      // טיפול בתאריכים (המרה לאובייקט Date לצורך השוואה נכונה)
       if (column === 'startDate' || column === 'endDate') {
         valueA = new Date(valueA).getTime();
         valueB = new Date(valueB).getTime();
       }
 
-      if (valueA < valueB) {
-        return this.isAscending ? -1 : 1;
-      }
-      if (valueA > valueB) {
-        return this.isAscending ? 1 : -1;
-      }
+      if (valueA < valueB) return this.isAscending ? -1 : 1;
+      if (valueA > valueB) return this.isAscending ? 1 : -1;
       return 0;
     });
-
-    // חשוב לרענן את התצוגה אחרי המיון
     this.cdr.detectChanges();
   }
 
-  // פונקציה להחזרת אייקון יחיד ודינמי
   getSortIcon(column: string): string {
     if (this.currentSortColumn !== column) return '↕';
     return this.isAscending ? '▲' : '▼';
   }
 
- onMobileSort(event: any) {
-  const column = event.target.value;
-  if (column) {
-    this.sort(column); // מפעיל את פונקציית המיון הקיימת שלך
+  onMobileSort(event: Event): void {
+    const column = (event.target as HTMLSelectElement).value;
+    if (column) this.sort(column);
   }
-}
-
 }

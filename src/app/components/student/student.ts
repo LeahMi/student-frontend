@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Api } from '../../services/api';
 import { NotificationService } from '../../services/notification';
+import { Student, EnrolledCourse, FormErrors } from '../../models/types.model';
 
 @Component({
   selector: 'app-student',
@@ -12,17 +13,11 @@ import { NotificationService } from '../../services/notification';
   templateUrl: './student.html',
   styleUrl: './student.css',
 })
-export class Student implements OnInit {
-  student: any = {}; // לנתונים שמוצגים בכותרת (הנתונים ה"רשמיים")
-  editForm: any = {};
-  myCourses: any[] = [];
-  message = '';
-  errors: any = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  };
+export class StudentComp implements OnInit {
+  student: Student = {} as Student;
+  editForm: Student = {} as Student;
+  myCourses: EnrolledCourse[] = [];
+  errors: FormErrors = { firstName: '', lastName: '', email: '', password: '' };
   isPasswordVisible: boolean = false;
 
   constructor(
@@ -32,69 +27,30 @@ export class Student implements OnInit {
     private notif: NotificationService,
   ) {}
 
-  ngOnInit() {
-    const savedStudent = localStorage.getItem('currentStudent');
+  ngOnInit(): void {
+    const savedStudent = this.api.getLoggedInStudent();
     if (savedStudent) {
-      this.student = JSON.parse(savedStudent);
+      this.student = savedStudent;
       this.editForm = { ...this.student };
-      if (this.student.id) {
-        this.loadCourses();
-      }
+      this.loadCourses();
     } else {
       this.router.navigate(['/login']);
     }
   }
 
-  loadCourses() {
+  loadCourses(): void {
     this.api.getMyCourses(this.student.id).subscribe({
-      next: (data) => {
+      next: (data: EnrolledCourse[]) => {
         this.myCourses = [...data];
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('שגיאה בטעינת קורסים:', err);
-      },
+      error: (err) => console.error('Error loading courses:', err),
     });
   }
 
-  clearErrors() {
-    this.errors = { firstName: '', lastName: '', email: '', password: '' };
-  }
+  updateProfile(): void {
+    if (!this.validateForm()) return;
 
-  updateProfile() {
-    // בדיקת תקינות (Validations)
-    this.clearErrors();
-    let hasError = false;
-
-    // ולידציה לשם פרטי ומשפחה (עברית בלבד, מעל 2 אותיות)
-    const nameRegex = /^[א-ת\s]{2,}$/;
-    if (!nameRegex.test(this.editForm.firstName)) {
-      this.errors.firstName = 'שם פרטי חייב להיות בעברית (לפחות 2 אותיות)';
-      hasError = true;
-    }
-    if (!nameRegex.test(this.editForm.lastName)) {
-      this.errors.lastName = 'שם משפחה חייב להיות בעברית (לפחות 2 אותיות)';
-      hasError = true;
-    }
-
-    // ולידציה לאימייל
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.editForm.email)) {
-      this.errors.email = 'כתובת אימייל אינה תקינה';
-      hasError = true;
-    }
-
-    // ולידציה לסיסמה (מעל 5 תווים, אותיות ומספרים)
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
-    if (!passRegex.test(this.editForm.password)) {
-      this.errors.password = 'סיסמה חייבת להכיל לפחות 6 תווים, אותיות ומספרים';
-      hasError = true;
-    }
-
-    if (hasError) {
-      this.cdr.detectChanges();
-      return;
-    }
     this.api.updateStudent(this.editForm).subscribe(() => {
       this.student = { ...this.editForm };
       this.api.setLoggedInStudent(this.student);
@@ -103,22 +59,51 @@ export class Student implements OnInit {
     });
   }
 
-  unregister(courseId: number, startDate: string) {
-    const start = new Date(startDate);
-    const now = new Date();
+  private validateForm(): boolean {
+    this.errors = { firstName: '', lastName: '', email: '', password: '' };
+    let isValid = true;
 
-    if (start <= now) {
+    const nameRegex = /^[א-ת\s]{2,}$/;
+    if (!nameRegex.test(this.editForm.firstName)) {
+      this.errors.firstName = 'שם פרטי חייב להיות בעברית (לפחות 2 אותיות)';
+      isValid = false;
+    }
+    if (!nameRegex.test(this.editForm.lastName)) {
+      this.errors.lastName = 'שם משפחה חייב להיות בעברית (לפחות 2 אותיות)';
+      isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.editForm.email)) {
+      this.errors.email = 'כתובת אימייל אינה תקינה';
+      isValid = false;
+    }
+
+    if (this.editForm.password) {
+      const passRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+      if (!passRegex.test(this.editForm.password)) {
+        this.errors.password = 'סיסמה חייבת להכיל לפחות 6 תווים, אותיות ומספרים';
+        isValid = false;
+      }
+    }
+
+    if (!isValid) this.cdr.detectChanges();
+    return isValid;
+  }
+
+  unregister(courseId: number, startDate: string): void {
+    if (new Date(startDate) <= new Date()) {
       this.notif.show('לא ניתן לבטל רישום לקורס שכבר התחיל');
       return;
     }
 
     this.api.unregisterCourse(this.student.id, courseId).subscribe(() => {
       this.notif.show('ביטול הקורס בוצע בהצלחה');
-      this.loadCourses(); // רענון הטבלה
+      this.loadCourses();
     });
   }
 
-  goToCourses() {
+  goToCourses(): void {
     this.router.navigate(['/courses']);
   }
 }

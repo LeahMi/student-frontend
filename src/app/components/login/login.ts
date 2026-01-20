@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // מאפשר שימוש ב-if ו-for ב-HTML
-import { FormsModule } from '@angular/forms'; // מאפשר שימוש ב-ngModel (קלט מהמשתמש)
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; 
 import { Router } from '@angular/router';
 import { Api } from '../../services/api';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule], // חייבים להוסיף אותם כאן
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -26,7 +26,7 @@ export class Login {
   onLogin() {
     this.errorMessage = '';
 
-    // בדיקת תקינות מבנית
+  
     if (!this.studentId || this.studentId.length !== 9) {
       this.errorMessage = 'תעודת זהות חייבת להכיל 9 ספרות';
       this.cdr.detectChanges();
@@ -48,7 +48,6 @@ export class Login {
         if (err.error && err.error.message) {
           this.errorMessage = err.error.message;
         } else if (typeof err.error === 'string' && err.error.includes('{')) {
-          // טיפול במקרה שהשרת מחזיר JSON כטקסט
           const parsed = JSON.parse(err.error);
           this.errorMessage = parsed.message;
         } else {
@@ -56,7 +55,7 @@ export class Login {
         }
 
         console.error(err);
-        this.cdr.detectChanges(); // <--- פקודת הקסם שמרעננת את ה-UI מיד!
+        this.cdr.detectChanges(); 
       },
     });
   }

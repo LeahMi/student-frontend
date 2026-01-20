@@ -5,17 +5,15 @@
 
   <div class="search-container">
     <div class="search-group">
-      <!-- שדות חיפוש -->
       <input type="text" [(ngModel)]="searchId" placeholder="קוד קורס" (input)="onSearch()" />
       <input type="text" [(ngModel)]="searchName" placeholder="שם קורס" (input)="onSearch()" />
 
       <div class="date-wrapper">
         <label class="light-label">התחלה מ-:</label>
-        <!-- הוספת קלאס לצבע לבן -->
+
         <input type="date" [(ngModel)]="searchDate" (change)="onSearch()" />
       </div>
 
-      <!-- אייקון מיון למובייל בלבד -->
       <div class="mobile-sort-wrapper">
         <label class="light-label" for="mobileSort">
           <span class="filter-icon">🔍</span> מיין לפי:

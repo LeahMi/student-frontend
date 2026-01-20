@@ -7,8 +7,8 @@ import { NotificationService } from './services/notification';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule],
-  templateUrl: './app.html', // הפניה לקובץ חיצוני
-  styleUrl: './app.css', // הפניה לקובץ חיצוני
+  templateUrl: './app.html', 
+  styleUrl: './app.css', 
 })
 export class App {
   constructor(public notif: NotificationService) {}

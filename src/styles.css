@@ -15,7 +15,6 @@
   outline: none;
 }
 
-/* הגדרות בסיס למבנה האפליקציה */
 html,
 body {
   height: 100%;
@@ -35,9 +34,7 @@ body {
   border-left: 5px solid var(--accent-teal);
   color: var(--white);
 }
-/* --- כותרת אפליקציה גלובלית (Header) --- */
 
-/* --- עטיפת התוכן המשתנה --- */
 .page-wrapper {
   max-width: 1000px;
   margin: 0 auto 40px auto;
@@ -45,7 +42,6 @@ body {
   width: 100%;
 }
 
-/* --- אלמנטים גלובליים --- */
 button {
   padding: 8px 18px;
   border: none !important;
@@ -132,7 +128,6 @@ input:focus {
   display: block;
 }
 
-/* --- טבלה וכרטיסיות --- */
 .table-container {
   width: 100%;
   overflow: hidden;

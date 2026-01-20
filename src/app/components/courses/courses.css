@@ -3,7 +3,7 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px; /* רווח מהטבלה */
+  margin-bottom: 40px;
 }
 .search-group {
   display: flex;

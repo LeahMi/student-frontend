@@ -11,7 +11,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 18px; /* רווח בין קבוצות שדות */
+  gap: 18px;
   border: 2px solid var(--gold);
 }
 .edit-card input {
@@ -19,7 +19,7 @@
   padding: 12px;
   border-radius: 10px;
   background: #fafafa;
-  text-align: left; /* יישור לשמאל */
+  text-align: left;
   direction: ltr;
 }
 .section-header-row {
@@ -32,16 +32,15 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Label תמיד בימין (בגלל RTL) מעל ה-Input */
+  align-items: flex-start;
 }
 
 .form-group label {
   font-weight: 600;
-  margin-bottom: 6px; /* רווח בין הלייבל לאינפוט */
+  margin-bottom: 6px;
   color: var(--primary);
   font-size: 0.9rem;
 }
-
 
 @media (max-width: 900px) {
   .grid-layout {

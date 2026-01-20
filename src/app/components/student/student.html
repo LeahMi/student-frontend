@@ -4,7 +4,6 @@
   </header>
 
   <div class="grid-layout">
-    <!-- עמודה ימנית: פרטים אישיים -->
     <section class="edit-card">
       <h3>עדכון פרטים אישיים</h3>
       <p class="id-display">
@@ -45,7 +44,6 @@
           />
           <div class="toggle-password" (click)="isPasswordVisible = !isPasswordVisible">
             @if (isPasswordVisible) {
-              <!-- אייקון עין סגורה -->
               <svg
                 xmlns="http://www.w3.org"
                 height="24px"
@@ -58,7 +56,6 @@
                 />
               </svg>
             } @else {
-              <!-- אייקון עין פתוחה -->
               <svg
                 xmlns="http://www.w3.org"
                 height="24px"
@@ -81,7 +78,6 @@
       <button (click)="updateProfile()" class="btn-gold">עדכן נתוני סטודנט</button>
     </section>
 
-    <!-- עמודה מרכזית: קורסים -->
     <section class="courses-section">
       <div class="section-header-row">
         <h3>הקורסים שלי</h3>
