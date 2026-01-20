@@ -1,59 +1,95 @@
-# StudentFrontend
+# Student Management System - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+This is the frontend application for the Student Management System, built with **Angular 21**. It provides an interactive interface for managing students and courses, specifically designed to work with the Spring Boot Backend.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🐳 Docker Deployment (Recommended)
 
-```bash
+In 2026, the project is fully containerized. This is the preferred method for running the application in a production-like environment.
+
+### 1. Build the Docker Image
+
+docker build -t student-frontend .
+
+---
+
+### 2. Run the Container
+
+docker run -p 4200:80 student-frontend
+
+The application will be accessible at:  
+http://localhost:4200
+
+---
+
+##  Local Development (Without Docker)
+
+### 1. Prerequisites
+
+- Node.js (Latest LTS version)  
+- Angular CLI v21.1.0  
+
+---
+
+### 2. Installation
+
+Install the necessary dependencies using npm:
+
+npm install
+
+---
+
+### 3. Running the Development Server
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to http://localhost:4200/.  
+The app will automatically reload if you change any source files.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🔌 Backend Integration & CORS
 
-```bash
+The frontend communicates with the backend API running on:  
+http://localhost:8080
+
+- API Base URL: http://localhost:8080/api  
+- CORS Support: The backend is configured to allow requests from http://localhost:4200  
+- Troubleshooting:  
+  If you receive a 403 Forbidden error, ensure the backend is running and its CORS policy is correctly set for your local dev port.
+
+---
+
+## 🛠 Project Structure & Commands
+
+### Code Scaffolding
+
+Generate new components or services:
+
 ng generate component component-name
-```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+### Building for Production
 
-## Building
-
-To build the project run:
-
-```bash
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The build artifacts will be stored in the dist/ directory, optimized for performance.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Testing
 
-```bash
-ng test
-```
+- Unit Tests: ng test (Powered by Vitest)  
+- E2E Tests: ng e2e  
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 📚 Tech Stack
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Framework: Angular 21  
+- Language: TypeScript  
+- Styling: CSS/SCSS (Tailwind / Bootstrap ready)  
+- Testing: Vitest  
+- Deployment: Docker & Nginx  
