@@ -55,19 +55,18 @@
     </thead>
     <tbody>
       @for (c of filteredCourses; track c.courseId) {
-      <tr>
-        <td data-label="מספר">{{ c.courseId }}</td>
-        <td data-label="שם">{{ c.courseName }}</td>
-        <td data-label="שנה">{{ c.academicYear }}</td>
-        <td data-label="התחלה">{{ c.startDate }}</td>
-        <td data-label="סיום">{{ c.endDate }}</td>
-        <td data-label="">
-          <button class="btn-register" (click)="register(c.courseId)">רישום</button>
-        </td>
-      </tr>
+        <tr>
+          <td data-label="מספר">{{ c.courseId }}</td>
+          <td data-label="שם">{{ c.courseName }}</td>
+          <td data-label="שנה">{{ c.academicYear }}</td>
+          <td data-label="התחלה">{{ c.startDate }}</td>
+          <td data-label="סיום">{{ c.endDate }}</td>
+          <td data-label="">
+            <button class="btn-register" (click)="register(c.courseId)">רישום</button>
+          </td>
+        </tr>
       }
     </tbody>
   </table>
   <br />
-  <button routerLink="/student" class="btn-back">חזרה לדף סטודנט</button>
 </div>
