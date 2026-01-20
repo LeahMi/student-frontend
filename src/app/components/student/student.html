@@ -1,0 +1,123 @@
+<div class="page-wrapper">
+  <header class="user-header">
+    <h3>שלום, {{ student.firstName }} {{ student.lastName }}</h3>
+  </header>
+
+  <div class="grid-layout">
+    <!-- עמודה ימנית: פרטים אישיים -->
+    <section class="edit-card">
+      <h3>עדכון פרטים אישיים</h3>
+      <p class="id-display">
+        ת"ז: <b>{{ editForm.id }}</b>
+      </p>
+
+      <div class="form-group">
+        <label>שם פרטי:</label>
+        <input [(ngModel)]="editForm.firstName" (input)="errors.firstName = ''" />
+        @if (errors.firstName) {
+          <small class="error-text">{{ errors.firstName }}</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>שם משפחה:</label>
+        <input [(ngModel)]="editForm.lastName" (input)="errors.lastName = ''" />
+        @if (errors.lastName) {
+          <small class="error-text">{{ errors.lastName }}</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>אימייל:</label>
+        <input [(ngModel)]="editForm.email" (input)="errors.email = ''" />
+        @if (errors.email) {
+          <small class="error-text">{{ errors.email }}</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>סיסמה:</label>
+        <div class="password-wrapper">
+          <input
+            [type]="isPasswordVisible ? 'text' : 'password'"
+            [(ngModel)]="editForm.password"
+            (input)="errors.password = ''"
+          />
+          <div class="toggle-password" (click)="isPasswordVisible = !isPasswordVisible">
+            @if (isPasswordVisible) {
+              <!-- אייקון עין סגורה -->
+              <svg
+                xmlns="http://www.w3.org"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#666"
+              >
+                <path
+                  d="m644-428-58-58q9-47-27-83t-83-27l-58-58q17-8 37-12t42-4q82 0 140 58t58 140q0 21-4 41t-12 37ZM786-204l-52-52q44-28 81-67t65-87q-37-90-123-145t-181-55q-26 0-51 3t-49 10l-64-64q39-12 79-18t85-6q134 0 240 78t151 216q-23 58-62 108t-90 89Zm135 163L781-181q-42 30-88 51t-93 30q-134 0-240-78T211-394q25-63 64-114t91-88L141-821l40-40 780 780-40 40ZM540-422.5q0-.5 0-.5t0-.5L422.5-540q.5 0 .5 0t.5 0q49 0 83.5 34.5T540-422.5ZM480-160q-134 0-240-78t-151-216q23-58 62-108t90-89l-58-58q-44 28-81 67t-65 87q37 90 123 145t181 55q26 0 51-3t49-10l60 60q-39 12-79 18t-85 6Zm0-120Z"
+                />
+              </svg>
+            } @else {
+              <!-- אייקון עין פתוחה -->
+              <svg
+                xmlns="http://www.w3.org"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#666"
+              >
+                <path
+                  d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q74-138 194-219T480-800q146 0 266 81.5T920-500q-74 138-194 219T480-200Zm0-300Zm0 228q125 0 227-64.5T846-500q-59-109-161-173.5T480-738q-125 0-227 64.5T114-500q59 109 161 173.5T480-272Z"
+                />
+              </svg>
+            }
+          </div>
+        </div>
+        @if (errors.password) {
+          <small class="error-text">{{ errors.password }}</small>
+        }
+      </div>
+
+      <button (click)="updateProfile()" class="btn-gold">עדכן נתוני סטודנט</button>
+    </section>
+
+    <!-- עמודה מרכזית: קורסים -->
+    <section class="courses-section">
+      <div class="section-header-row">
+        <h3>הקורסים שלי</h3>
+        <button (click)="goToCourses()" class="btn-accent">מעבר לרישום לקורסים</button>
+      </div>
+
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>מספר</th>
+              <th>שם הקורס</th>
+              <th>ציון</th>
+              <th>התחלה</th>
+              <th>סיום</th>
+              <th>פעולות</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of myCourses; track c.courseId) {
+              <tr>
+                <td data-label="מספר">{{ c.courseId }}</td>
+                <td data-label="שם הקורס">{{ c.courseName }}</td>
+                <td data-label="ציון" class="grade-cell">{{ c.grade || 'טרם הוזן' }}</td>
+                <td data-label="התחלה">{{ c.startDate }}</td>
+                <td data-label="סיום">{{ c.endDate }}</td>
+                <td data-label="">
+                  <button class="btn-soft" (click)="unregister(c.courseId, c.startDate)">
+                    בטל רישום
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>

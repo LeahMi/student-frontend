@@ -1,0 +1,60 @@
+.main-app-header {
+  padding-top: 30px;
+  background-color: var(--gray-light);
+  text-align: left;
+  width: 100%;
+}
+
+.header-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.main-title {
+  color: var(--primary);
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.sub-title {
+  color: var(--secondary);
+  margin: 5px 0 0 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.header-divider {
+  border: none;
+  border-top: 1px solid #ddd; /* קו עדין לכל אורך המסך */
+  margin: 25px 0 0 0;
+  width: 100%;
+}
+.snackbar {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary);
+  color: var(--gold);
+  padding: 14px 28px;
+  border-radius: 10px;
+  z-index: 9999;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  border-right: 5px solid var(--secondary);
+  font-weight: 600;
+  animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -20px;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}

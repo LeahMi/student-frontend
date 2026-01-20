@@ -1,0 +1,73 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <h2>חיפוש ורישום לקורסים</h2>
+  </header>
+
+  <div class="search-container">
+    <div class="search-group">
+      <!-- שדות חיפוש -->
+      <input type="text" [(ngModel)]="searchId" placeholder="קוד קורס" (input)="onSearch()" />
+      <input type="text" [(ngModel)]="searchName" placeholder="שם קורס" (input)="onSearch()" />
+
+      <div class="date-wrapper">
+        <label class="light-label">התחלה מ-:</label>
+        <!-- הוספת קלאס לצבע לבן -->
+        <input type="date" [(ngModel)]="searchDate" (change)="onSearch()" />
+      </div>
+
+      <!-- אייקון מיון למובייל בלבד -->
+      <div class="mobile-sort-wrapper">
+        <label class="light-label" for="mobileSort">
+          <span class="filter-icon">🔍</span> מיין לפי:
+        </label>
+        <select id="mobileSort" (change)="onMobileSort($event)" class="sort-select">
+          <option value="">בחר שדה...</option>
+          <option value="courseId">מספר קורס</option>
+          <option value="courseName">שם קורס</option>
+          <option value="academicYear">שנה</option>
+          <option value="startDate">תאריך התחלה</option>
+          <option value="endDate">תאריך סיום</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th (click)="sort('courseId')">
+          מספר <span class="sort-icon">{{ getSortIcon('courseId') }}</span>
+        </th>
+        <th (click)="sort('courseName')">
+          שם <span class="sort-icon">{{ getSortIcon('courseName') }}</span>
+        </th>
+        <th (click)="sort('academicYear')">
+          שנה <span class="sort-icon">{{ getSortIcon('academicYear') }}</span>
+        </th>
+        <th (click)="sort('startDate')">
+          התחלה <span class="sort-icon">{{ getSortIcon('startDate') }}</span>
+        </th>
+        <th (click)="sort('endDate')">
+          סיום <span class="sort-icon">{{ getSortIcon('endDate') }}</span>
+        </th>
+        <th>פעולה</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (c of filteredCourses; track c.courseId) {
+      <tr>
+        <td data-label="מספר">{{ c.courseId }}</td>
+        <td data-label="שם">{{ c.courseName }}</td>
+        <td data-label="שנה">{{ c.academicYear }}</td>
+        <td data-label="התחלה">{{ c.startDate }}</td>
+        <td data-label="סיום">{{ c.endDate }}</td>
+        <td data-label="">
+          <button class="btn-register" (click)="register(c.courseId)">רישום</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <br />
+  <button routerLink="/student" class="btn-back">חזרה לדף סטודנט</button>
+</div>

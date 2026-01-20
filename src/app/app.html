@@ -1,0 +1,18 @@
+<header class="main-app-header">
+  <div class="header-content">
+    <h1 class="main-title">ניהול קורסים</h1>
+    <p class="sub-title">מערכת לסטודנט</p>
+  </div>
+  <hr class="header-divider" />
+</header>
+
+<main class="content-container">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- ה-Snackbar המעודכן -->
+@if (notif.message$ | async; as msg) {
+  <div class="snackbar">
+    {{ msg }}
+  </div>
+}

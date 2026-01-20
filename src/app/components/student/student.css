@@ -1,0 +1,55 @@
+.grid-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+.edit-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* רווח בין קבוצות שדות */
+  border: 2px solid var(--gold);
+}
+.edit-card input {
+  border: 1px solid #eee;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: left; /* יישור לשמאל */
+  direction: ltr;
+}
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Label תמיד בימין (בגלל RTL) מעל ה-Input */
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px; /* רווח בין הלייבל לאינפוט */
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 900px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
+  .edit-card {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto 30px auto;
+  }
+}
